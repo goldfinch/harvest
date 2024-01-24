@@ -25,4 +25,9 @@ class HarvestBuildTask extends BuildTask
 
         // shell_exec('php vendor/silverstripe/framework/cli-script.php dev/tasks/harvest');
     }
+
+    public function run($request)
+    {
+        // ..
+    }
 }
