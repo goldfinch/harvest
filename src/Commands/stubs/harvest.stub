@@ -1,0 +1,11 @@
+<?php
+{{ namespace }}
+use Goldfinch\Harvest\Harvest;
+
+class {{ class }} extends Harvest
+{
+    public function run(): void
+    {
+        // .. SilverStripe\Security\Member::mill()->count(3)->make();
+    }
+}
