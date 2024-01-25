@@ -26,10 +26,15 @@ class HarvestMakeCommand extends GeneratorCommand
     protected function execute($input, $output): int
     {
         $harvestName = $input->getArgument('name');
+        $shortname = $input->getArgument('shortname');
+
+        if (!$shortname) {
+            $shortname = strtolower($harvestName);
+        }
 
         $harvestName = 'App\Harvest\\' . $harvestName . $this->prefix; // TODO
 
-        if (!$this->setHarvestInConfig($harvestName)) {
+        if (!$this->setHarvestInConfig($harvestName, $shortname)) {
             // create config
 
             $command = $this->getApplication()->find('vendor:harvest:config');
@@ -41,7 +46,7 @@ class HarvestMakeCommand extends GeneratorCommand
             $greetInput = new ArrayInput($arguments);
             $returnCode = $command->run($greetInput, $output);
 
-            $this->setHarvestInConfig($harvestName);
+            $this->setHarvestInConfig($harvestName, $shortname);
         }
 
         parent::execute($input, $output);
@@ -49,7 +54,7 @@ class HarvestMakeCommand extends GeneratorCommand
         return Command::SUCCESS;
     }
 
-    private function setHarvestInConfig($harvestName)
+    private function setHarvestInConfig($harvestName, $shortname)
     {
         $rewritten = false;
 
@@ -67,9 +72,16 @@ class HarvestMakeCommand extends GeneratorCommand
 
                 $ucfirst = ucfirst($harvestName);
 
+                if ($shortname) {
+                    $harvestLine = $shortname.': '.$harvestName;
+                } else {
+                    // not reachable at the moment as we modifying $shortname if it's not presented
+                    $harvestLine = '- ' . $harvestName;
+                }
+
                 $newContent = $this->addToLine(
                     $file->getPathname(),
-                    'harvesters:','    - '.$harvestName,
+                    'harvesters:','    '.$harvestLine,
                 );
 
                 file_put_contents($file->getPathname(), $newContent);
@@ -79,5 +91,19 @@ class HarvestMakeCommand extends GeneratorCommand
         }
 
         return $rewritten;
+    }
+
+    public function configure(): void
+    {
+        $this->addArgument(
+            'name',
+            InputArgument::REQUIRED,
+            'The name class of the ' . strtolower($this->type)
+       );
+
+       $this->addArgument(
+            'shortname',
+            InputArgument::OPTIONAL,
+       );
     }
 }

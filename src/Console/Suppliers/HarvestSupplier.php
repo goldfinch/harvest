@@ -7,10 +7,15 @@ use Goldfinch\CLISupplier\CLISupplier;
 
 class HarvestSupplier implements CLISupplier
 {
-    public static function run()
+    public static function run(...$args)
     {
-        $harvesters = Harvest::config();
-
-        return $harvesters->get('harvesters');
+        if (count($args)) {
+            $harvesters = Harvest::config()->get('harvesters');
+            if ($harvesters && is_array($harvesters)) {
+                $harvestClass = $harvesters[$args[0]];
+                $harvestClass::run();
+            }
+        }
+        return;
     }
 }

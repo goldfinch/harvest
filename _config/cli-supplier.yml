@@ -4,4 +4,5 @@ After: "goldfinch/cli-supplier"
 ---
 Goldfinch\CLISupplier\Controllers\CLISupplierController:
   registered_supplies:
-    harvest: Goldfinch\Harvest\Console\Suppliers\HarvestSupplier
+    harvest-run: Goldfinch\Harvest\Console\Suppliers\HarvestSupplier
+    harvest: Goldfinch\Harvest\Console\Suppliers\RegisteredHarvestSupplier

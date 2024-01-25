@@ -3,4 +3,4 @@ Name: goldfinch-harvest
 ---
 Goldfinch\Harvest\Harvest:
   harvesters:
-    - Goldfinch\Harvest\Harvesters\MemberHarvest
+    members: Goldfinch\Harvest\Harvesters\MembersHarvest
