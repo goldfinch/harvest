@@ -2,5 +2,5 @@
 Name: goldfinch-harvest
 ---
 Goldfinch\Harvest\Harvest:
-  register:
+  harvesters:
     - Goldfinch\Harvest\Harvesters\MemberHarvest

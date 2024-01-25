@@ -2,8 +2,11 @@
 
 namespace Goldfinch\Harvest\Commands;
 
+use Symfony\Component\Finder\Finder;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputArgument;
 
 #[AsCommand(name: 'make:harvest')]
 class HarvestMakeCommand extends GeneratorCommand
@@ -12,7 +15,7 @@ class HarvestMakeCommand extends GeneratorCommand
 
     protected $description = 'Create harvest [Harvest]';
 
-    protected $path = '[psr4]/Harvesters';
+    protected $path = '[psr4]/Harvest';
 
     protected $type = 'harvest';
 
@@ -22,8 +25,59 @@ class HarvestMakeCommand extends GeneratorCommand
 
     protected function execute($input, $output): int
     {
+        $harvestName = $input->getArgument('name');
+
+        $harvestName = 'App\Harvest\\' . $harvestName . $this->prefix; // TODO
+
+        if (!$this->setHarvestInConfig($harvestName)) {
+            // create config
+
+            $command = $this->getApplication()->find('vendor:harvest:config');
+
+            $arguments = [
+                'name' => 'harvest',
+            ];
+
+            $greetInput = new ArrayInput($arguments);
+            $returnCode = $command->run($greetInput, $output);
+
+            $this->setHarvestInConfig($harvestName);
+        }
+
         parent::execute($input, $output);
 
         return Command::SUCCESS;
+    }
+
+    private function setHarvestInConfig($harvestName)
+    {
+        $rewritten = false;
+
+        $finder = new Finder();
+        $files = $finder->in(BASE_PATH . '/app/_config')->files()->contains('Goldfinch\Harvest\Harvest:');
+
+        foreach ($files as $file) {
+
+            // stop after first replacement
+            if ($rewritten) {
+                break;
+            }
+
+            if (strpos($file->getContents(), 'harvesters') !== false) {
+
+                $ucfirst = ucfirst($harvestName);
+
+                $newContent = $this->addToLine(
+                    $file->getPathname(),
+                    'harvesters:','    - '.$harvestName,
+                );
+
+                file_put_contents($file->getPathname(), $newContent);
+
+                $rewritten = true;
+            }
+        }
+
+        return $rewritten;
     }
 }

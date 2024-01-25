@@ -3,4 +3,4 @@ Name: app-{{ class }}
 After: "goldfinch/harvest"
 ---
 Goldfinch\Harvest\Harvest:
-  register:
+  harvesters:

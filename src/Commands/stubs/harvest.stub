@@ -2,7 +2,7 @@
 {{ namespace }}
 use Goldfinch\Harvest\Harvest;
 
-class {{ class }} extends Harvest
+class {{ class }}Harvest extends Harvest
 {
     public function run(): void
     {

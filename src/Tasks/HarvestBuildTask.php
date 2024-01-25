@@ -17,9 +17,9 @@ class HarvestBuildTask extends BuildTask
 
     public function __construct()
     {
-        if (!Director::is_cli()) {
-            exit;
-        }
+        // if (!Director::is_cli()) {
+        //     exit;
+        // }
 
         // run all existed harvests
 
