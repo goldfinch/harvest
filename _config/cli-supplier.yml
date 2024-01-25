@@ -1,0 +1,7 @@
+---
+Name: goldfinch-harvest-cli-supplier
+After: "goldfinch/cli-supplier"
+---
+Goldfinch\CLISupplier\Controllers\CLISupplierController:
+  registered_supplies:
+    harvest: Goldfinch\Harvest\Console\Suppliers\HarvestSupplier
