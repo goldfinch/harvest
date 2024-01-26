@@ -99,8 +99,12 @@ class HarvestMakeCommand extends GeneratorCommand
         return $rewritten;
     }
 
-    public function configure(): void
+    protected function configure(): void
     {
+        $this
+            ->setDescription($this->description)
+            ->setHelp($this->help);
+
         $this->addArgument(
             'name',
             InputArgument::REQUIRED,

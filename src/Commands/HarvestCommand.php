@@ -54,8 +54,12 @@ class HarvestCommand extends GeneratorCommand
         return Command::SUCCESS;
     }
 
-    public function configure(): void
+    protected function configure(): void
     {
+        $this
+            ->setDescription($this->description)
+            ->setHelp($this->help);
+
        $this->addArgument(
             'harvest',
             InputArgument::OPTIONAL,

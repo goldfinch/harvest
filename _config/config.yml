@@ -1,6 +1,3 @@
 ---
 Name: goldfinch-harvest
 ---
-Goldfinch\Harvest\Harvest:
-  harvesters:
-    members: Goldfinch\Harvest\Harvesters\MembersHarvest
