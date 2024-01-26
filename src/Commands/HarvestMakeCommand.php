@@ -3,6 +3,7 @@
 namespace Goldfinch\Harvest\Commands;
 
 use Symfony\Component\Finder\Finder;
+use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -49,7 +50,12 @@ class HarvestMakeCommand extends GeneratorCommand
             $this->setHarvestInConfig($harvestName, $shortname);
         }
 
-        parent::execute($input, $output);
+        $state = parent::execute($input, $output);
+
+        if ($state !== false) {
+            $io = new InputOutput($input, $output);
+            $io->info('Run: php taz app:dev-build');
+        }
 
         return Command::SUCCESS;
     }

@@ -4,8 +4,8 @@ use Goldfinch\Harvest\Harvest;
 
 class {{ class }}Harvest extends Harvest
 {
-    public function run(): void
+    public static function run(): void
     {
-        // .. SilverStripe\Security\Member::mill()->count(3)->make();
+        // ..
     }
 }

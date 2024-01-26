@@ -7,4 +7,6 @@ use SilverStripe\Core\Config\Configurable;
 class Harvest
 {
     use Configurable;
+
+    protected $harvesters = [];
 }

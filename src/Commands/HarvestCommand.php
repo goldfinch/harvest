@@ -16,6 +16,8 @@ class HarvestCommand extends GeneratorCommand
 
     protected $description = 'Display available harvesters or call one';
 
+    protected $no_arguments = true;
+
     protected function execute($input, $output): int
     {
         $harvest = $input->getArgument('harvest');
@@ -31,7 +33,7 @@ class HarvestCommand extends GeneratorCommand
                     SupplyHelper::supply('harvest-run', $harvest);
                     $io->right('The harvest [' . $harvest . '] has been run');
                 } else {
-                    $io->wrong('Harvest [' . $harvest . '] does not exists. Run [php taz harvest] to discover all available harvesters');
+                    $io->wrong('Harvest [' . $harvest . '] does not exist. Run [php taz harvest] to discover all available harvesters. If you just created new Harvest, you might need to run [php taz app:dev-build] first');
                 }
             } else {
 
