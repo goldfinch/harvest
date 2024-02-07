@@ -33,7 +33,7 @@ class HarvestCommand extends GeneratorCommand
                     SupplyHelper::supply('harvest-run', $harvest);
                     $io->right('The harvest [' . $harvest . '] has been run');
                 } else {
-                    $io->wrong('Harvest [' . $harvest . '] does not exist. Run [php taz harvest] to discover all available harvesters. If you just created new Harvest, you might need to run [php taz app:dev-build] first');
+                    $io->wrong('Harvest [' . $harvest . '] does not exist. Run [php taz harvest] to discover all available harvesters. If you just created new Harvest, you might need to run [php taz dev/build] first');
                 }
             } else {
 

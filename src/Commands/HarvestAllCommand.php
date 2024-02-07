@@ -26,13 +26,7 @@ class HarvestAllCommand extends GeneratorCommand
             foreach ($response as $harvest => $class) {
 
                 $command = $this->getApplication()->find('harvest');
-
-                $arguments = [
-                    'harvest' => $harvest,
-                ];
-
-                $greetInput = new ArrayInput($arguments);
-                $returnCode = $command->run($greetInput, $output);
+                $command->run(new ArrayInput(['harvest' => $harvest]), $output);
             }
         }
 

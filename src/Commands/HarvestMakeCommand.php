@@ -54,7 +54,7 @@ class HarvestMakeCommand extends GeneratorCommand
 
         if ($state !== false) {
             $io = new InputOutput($input, $output);
-            $io->info('Run: php taz app:dev-build');
+            $io->info('Run: php taz dev/build');
         }
 
         return Command::SUCCESS;
