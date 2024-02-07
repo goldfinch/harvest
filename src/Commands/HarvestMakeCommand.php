@@ -2,12 +2,10 @@
 
 namespace Goldfinch\Harvest\Commands;
 
-use Symfony\Component\Finder\Finder;
 use Goldfinch\Taz\Services\InputOutput;
 use Goldfinch\Taz\Console\GeneratorCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputArgument;
 
 #[AsCommand(name: 'make:harvest')]
 class HarvestMakeCommand extends GeneratorCommand
@@ -26,94 +24,40 @@ class HarvestMakeCommand extends GeneratorCommand
 
     protected function execute($input, $output): int
     {
-        $harvestName = $input->getArgument('name');
-        $shortname = $input->getArgument('shortname');
+        $state = parent::execute($input, $output);
 
-        if (!$shortname) {
-            $shortname = strtolower($harvestName);
+        if ($state === false) {
+            return Command::FAILURE;
         }
 
-        $harvestName = 'App\Harvest\\' . $harvestName . $this->prefix; // TODO
+        $nameInput = $this->getAttrName($input);
 
-        if (!$this->setHarvestInConfig($harvestName, $shortname)) {
-            // create config
+        $shortName = $this->askClassNameQuestion('What [short name] this harvest need to be called by (eg: ' . strtolower($nameInput) . ')', $input, $output, '/^([A-z0-9\_-]+)$/', 'Name can contains letter, numbers, underscore and dash');
+
+        // find config
+        $config = $this->findYamlConfigFileByName('app-harvest');
+
+        // create new config if not exists
+        if (!$config) {
 
             $command = $this->getApplication()->find('vendor:harvest:config');
+            $command->run(new ArrayInput(['name' => 'harvest']), $output);
 
-            $arguments = [
-                'name' => 'harvest',
-            ];
-
-            $greetInput = new ArrayInput($arguments);
-            $returnCode = $command->run($greetInput, $output);
-
-            $this->setHarvestInConfig($harvestName, $shortname);
+            $config = $this->findYamlConfigFileByName('app-harvest');
         }
 
-        $state = parent::execute($input, $output);
+        // update config
+        $this->updateYamlConfig(
+            $config,
+            'Goldfinch\Harvest\Harvest' . '.harvesters.' . $shortName,
+            $this->getNamespaceClass($input)
+        );
 
         if ($state !== false) {
             $io = new InputOutput($input, $output);
-            $io->info('Run: php taz dev/build');
+            $io->info('To refresh harvest list [php taz harvest] you need to run [php taz dev/build]');
         }
 
         return Command::SUCCESS;
-    }
-
-    private function setHarvestInConfig($harvestName, $shortname)
-    {
-        $rewritten = false;
-
-        $finder = new Finder();
-        $files = $finder->in(BASE_PATH . '/app/_config')->files()->contains('Goldfinch\Harvest\Harvest:');
-
-        foreach ($files as $file) {
-
-            // stop after first replacement
-            if ($rewritten) {
-                break;
-            }
-
-            if (strpos($file->getContents(), 'harvesters') !== false) {
-
-                $ucfirst = ucfirst($harvestName);
-
-                if ($shortname) {
-                    $harvestLine = $shortname.': '.$harvestName;
-                } else {
-                    // not reachable at the moment as we modifying $shortname if it's not presented
-                    $harvestLine = '- ' . $harvestName;
-                }
-
-                $newContent = $this->addToLine(
-                    $file->getPathname(),
-                    'harvesters:','    '.$harvestLine,
-                );
-
-                file_put_contents($file->getPathname(), $newContent);
-
-                $rewritten = true;
-            }
-        }
-
-        return $rewritten;
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->setDescription($this->description)
-            ->setHelp($this->help);
-
-        $this->addArgument(
-            'name',
-            InputArgument::REQUIRED,
-            'The name class of the ' . strtolower($this->type)
-       );
-
-       $this->addArgument(
-            'shortname',
-            InputArgument::OPTIONAL,
-       );
     }
 }
