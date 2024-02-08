@@ -32,7 +32,7 @@ class HarvestMakeCommand extends GeneratorCommand
 
         $nameInput = $this->getAttrName($input);
 
-        $shortName = $this->askClassNameQuestion('What [short name] this harvest need to be called by? (eg: ' . strtolower($nameInput) . ')', $input, $output, '/^([A-z0-9\_-]+)$/', 'Name can contains letter, numbers, underscore and dash');
+        $shortName = $this->askClassNameQuestion('What [short name] does this harvest need to be called by? (eg: ' . strtolower($nameInput) . ')', $input, $output, '/^([A-z0-9\_-]+)$/', 'Name can contains letter, numbers, underscore and dash');
 
         // find config
         $config = $this->findYamlConfigFileByName('app-harvest');

@@ -1,6 +1,6 @@
 {
     "name": "goldfinch/harvest",
-    "description": "Harvest, seeder for Silverstripe",
+    "description": "Harvest is a seeder component that helps you to bundle automation run by Taz",
     "type": "silverstripe-vendormodule",
     "keywords": [
         "silverstripe",
