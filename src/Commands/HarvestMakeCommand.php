@@ -40,8 +40,13 @@ class HarvestMakeCommand extends GeneratorCommand
         // create new config if not exists
         if (!$config) {
 
-            $command = $this->getApplication()->find('vendor:harvest:config');
-            $command->run(new ArrayInput(['name' => 'harvest']), $output);
+            $command = $this->getApplication()->find('make:config');
+            $command->run(new ArrayInput([
+                'name' => 'harvest',
+                '--plain' => true,
+                '--after' => 'goldfinch/harvest',
+                '--nameprefix' => 'app-',
+            ]), $output);
 
             $config = $this->findYamlConfigFileByName('app-harvest');
         }
