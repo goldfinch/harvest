@@ -16,6 +16,10 @@ composer require goldfinch/harvest
 
 ## Available Taz commands
 
+If you haven't used [**Taz**](https://github.com/goldfinch/taz)🌪️ before, *taz* file must be presented in your root project folder `cp vendor/goldfinch/taz/taz taz`
+
+---
+
 > Create new harvest
 ```bash
 php taz make:harvest
@@ -32,8 +36,6 @@ php taz harvest myharvest
 ```bash
 php taz harvest:all
 ```
-
->> If you haven't used [**Taz**](https://github.com/goldfinch/taz)🌪️ before, *taz* file must be presented in your root project folder `cp vendor/goldfinch/taz/taz taz`
 
 ## Use Case example
 
