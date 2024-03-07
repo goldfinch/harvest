@@ -22,7 +22,7 @@
         "silverstripe/framework": "^5.0",
         "silverstripe/admin": "^2.0",
         "goldfinch/taz": "^2.0",
-        "goldfinch/cli-supplier": "^1.0"
+        "goldfinch/cli-supplier": "^2.0"
     },
     "autoload": {
         "psr-4": {
